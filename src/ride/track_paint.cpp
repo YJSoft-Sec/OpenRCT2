@@ -42,6 +42,10 @@ enum {
     DF_NW = 1 << 3,
 };
 
+enum {
+    SUPPORT_STYLE_WOOD
+};
+
 int TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height)
 {
     return sub_98197C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, ViewRotation);
@@ -55,6 +59,20 @@ int TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY
 int TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, uint8 rotation)
 {
     return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, rotation);
+}
+
+bool TileDrawingContext::DrawSupports(uint8 style, uint16 special, sint32 z, uint32 imageFlags, bool * underground)
+{
+    return DrawSupports(style, Direction & 1, special, z, imageFlags, underground);
+}
+
+bool TileDrawingContext::DrawSupports(uint8 style, uint8 typeDirection, uint16 special, sint32 z, uint32 imageFlags, bool * underground)
+{
+    if (style == SUPPORT_STYLE_WOOD)
+    {
+        return wooden_a_supports_paint_setup(typeDirection, special, z, imageFlags, underground);
+    }
+    return false;
 }
 
 void TileDrawingContext::UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA)
@@ -462,7 +480,7 @@ namespace TopSpin
             { DF_SW,            -32,   0, 112, 8, 4, 2, 5, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF },
         };
 
-        wooden_a_supports_paint_setup(dc->Direction & 1, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+        dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32));
         dc->DrawFloor(0, RCT2_GLOBAL(0x00F44198, uint32), dc->Z);
         uint8 fences = TopSpinTrackSeqFenceMap[dc->TrackSequence].fences;
         dc->DrawFencesChecked(fences, 0, dc->Z);
@@ -503,7 +521,7 @@ namespace Shop
         if (dc->TrackType != 118 &&
             dc->TrackType != 121) return;
 
-        bool hasSupports = wooden_a_supports_paint_setup(dc->Direction & 1, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
+        bool hasSupports = dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32));
 
         RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
         RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
@@ -559,7 +577,7 @@ namespace Facility
     {
         if (dc->TrackType != 118) return;
 
-        bool hasSupports = wooden_a_supports_paint_setup(dc->Direction & 1, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
+        bool hasSupports = dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32));
 
         RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
         RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
@@ -757,7 +775,7 @@ namespace MotionSimulator
         if (dc->TrackType != 110) return;
         if (dc->TrackSequence > 3) return;
 
-        wooden_a_supports_paint_setup(dc->Direction & 1, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+        dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32));
         dc->DrawFloor(0, RCT2_GLOBAL(0x00F4419C, uint32), dc->Z);
 
         uint8 fences = DirectionInfo[dc->TrackSequence].fences;

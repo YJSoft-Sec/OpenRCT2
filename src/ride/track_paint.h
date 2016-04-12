@@ -19,6 +19,8 @@ public:
     int draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height);
     int draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height);
     int draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, uint8 rotation);
+    bool DrawSupports(uint8 style, uint16 special, sint32 z, uint32 imageFlags, bool * underground = nullptr);
+    bool DrawSupports(uint8 style, uint8 typeDirection, uint16 special, sint32 z, uint32 imageFlags, bool * underground = nullptr);
     void UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA);
 };
 
