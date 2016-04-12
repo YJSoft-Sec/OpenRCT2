@@ -106,10 +106,10 @@ void RideDrawingContext::DrawFloor(uint8 floorType, uint32 imageFlags, sint32 z)
     draw_98197C(imageId, 0, 0, 32, 32, 1, z);
 }
 
-void RideDrawingContext::DrawFence(uint8 fenceType, sint32 z)
+void RideDrawingContext::DrawFence(uint8 fenceType, uint8 direction, sint32 z)
 {
     uint32 imageId;
-    switch (Direction) {
+    switch (direction) {
     case 0:
         imageId = 20564 | RCT2_GLOBAL(0x00F44198, uint32);
         RCT2_GLOBAL(0x009DEA52, uint16) = 2;
@@ -141,10 +141,9 @@ void RideDrawingContext::DrawFence(uint8 fenceType, sint32 z)
     }
 }
 
-void RideDrawingContext::DrawFenceChecked(uint8 fenceType, sint32 z)
+void RideDrawingContext::DrawFenceChecked(uint8 fenceType, uint8 direction, sint32 z)
 {
-    uint8 currentRotation = get_current_rotation();
-    rct_sxy8 checkOffset = GetEntranceCheckOffset(Direction, ViewRotation);
+    rct_sxy8 checkOffset = GetEntranceCheckOffset(direction, ViewRotation);
 
     rct_xy8 fenceCheckPosition;
     fenceCheckPosition.x = RCT2_GLOBAL(0x009DE56A, uint16) >> 5;
@@ -153,11 +152,10 @@ void RideDrawingContext::DrawFenceChecked(uint8 fenceType, sint32 z)
     fenceCheckPosition.y += checkOffset.y;
 
     uint8 stationId = map_get_station(MapElement);
-    rct_ride *ride = get_ride(MapElement->properties.track.ride_index);
-    if (fenceCheckPosition.xy != ride->entrances[stationId] &&
-        fenceCheckPosition.xy != ride->exits[stationId])
+    if (fenceCheckPosition.xy != Ride->entrances[stationId] &&
+        fenceCheckPosition.xy != Ride->exits[stationId])
     {
-        DrawFence(Direction, z);
+        DrawFence(fenceType, direction, z);
     }
 }
 
@@ -167,7 +165,7 @@ void RideDrawingContext::DrawFencesChecked(uint8 fenceDirections, uint8 fenceTyp
     {
         if (fenceDirections & (1 << i))
         {
-            DrawFenceChecked((Direction + i) & 3, z);
+            DrawFenceChecked(fenceType, (Direction + i) & 3, z);
         }
     }
 }

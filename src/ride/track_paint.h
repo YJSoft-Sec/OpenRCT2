@@ -32,8 +32,8 @@ public:
     uint8            TrackSequence;
 
     void DrawFloor(uint8 floorType, uint32 imageFlags, sint32 z);
-    void DrawFence(uint8 fenceType, sint32 z);
-    void DrawFenceChecked(uint8 fenceType, sint32 z);
+    void DrawFence(uint8 fenceType, uint8 direction, sint32 z);
+    void DrawFenceChecked(uint8 fenceType, uint8 direction, sint32 z);
     void DrawFencesChecked(uint8 fenceDirections, uint8 fenceType, sint32 z);
 };
 
