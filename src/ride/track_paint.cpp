@@ -35,15 +35,26 @@ extern "C"
     #include "track_paint.h"
 }
 
-enum {
+enum
+{
     DF_NE = 1 << 0,
     DF_SE = 1 << 1,
     DF_SW = 1 << 2,
     DF_NW = 1 << 3,
 };
 
-enum {
+enum
+{
     SUPPORT_STYLE_WOOD
+};
+
+enum
+{
+    FLAT_RIDE_ELEM_MOTION_SIMULATOR  = 110,
+    FLAT_RIDE_ELEM_FACILITY          = 118,
+    FLAT_RIDE_ELEM_SHOP              = 118,
+    FLAT_RIDE_ELEM_INFORMATION_KIOSK = 121,
+    FLAT_RIDE_ELEM_TOP_SPIN          = 123,
 };
 
 int TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height)
@@ -455,7 +466,7 @@ namespace TopSpin
      */
     static void Draw(RideDrawingContext * dc)
     {
-        if (dc->TrackType != 123) return;
+        if (dc->TrackType != FLAT_RIDE_ELEM_TOP_SPIN) return;
         if (dc->TrackSequence > 8) return;
 
         struct TopSpinTileInfo
@@ -518,8 +529,8 @@ namespace Shop
      */
     static void Draw(RideDrawingContext * dc)
     {
-        if (dc->TrackType != 118 &&
-            dc->TrackType != 121) return;
+        if (dc->TrackType != FLAT_RIDE_ELEM_SHOP &&
+            dc->TrackType != FLAT_RIDE_ELEM_INFORMATION_KIOSK) return;
 
         bool hasSupports = dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32));
 
@@ -575,7 +586,7 @@ namespace Facility
      */
     static void Draw(RideDrawingContext * dc)
     {
-        if (dc->TrackType != 118) return;
+        if (dc->TrackType != FLAT_RIDE_ELEM_FACILITY) return;
 
         bool hasSupports = dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32));
 
@@ -772,7 +783,7 @@ namespace MotionSimulator
             { DF_SW | DF_SE, -16, -16, -16,  16,  16,  16,  16, -16 },
         };
 
-        if (dc->TrackType != 110) return;
+        if (dc->TrackType != FLAT_RIDE_ELEM_MOTION_SIMULATOR) return;
         if (dc->TrackSequence > 3) return;
 
         dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32));

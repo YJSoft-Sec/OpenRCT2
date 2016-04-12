@@ -564,7 +564,8 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			case MAP_ELEMENT_TYPE_TRACK:
 				sprintf(
 					buffer,
-					"Track (%d)",
+					"Track (%d[%d])",
+					element->properties.track.type,
 					element->properties.track.sequence & 0x0F
 				);
 				type_name = buffer;
