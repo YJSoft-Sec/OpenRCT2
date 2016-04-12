@@ -3,6 +3,8 @@
 
 #include "../common.h"
 
+#ifdef __cplusplus
+
 class TileDrawingContext
 {
 public:
@@ -14,9 +16,9 @@ public:
     sint32            Z;
     rct_map_element * MapElement;
 
-    int sub_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height);
-    int sub_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height);
-    int sub_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, uint8 rotation);
+    int draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height);
+    int draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height);
+    int draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, uint8 rotation);
     void UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA);
 };
 
@@ -35,12 +37,22 @@ public:
     void DrawFencesChecked(uint8 fenceDirections, uint8 fenceType, sint32 z);
 };
 
-typedef void (*TRACK_PAINT_FUNCTION)(RideDrawingContext * dc);
-typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
+typedef void (*RideDrawFunction)(RideDrawingContext * dc);
 
-TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int direction);
+#endif /* __cplusplus */
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+
+        void viewport_track_paint_setup_2(uint8 rideIndex, uint8 direction, sint32 height, rct_map_element * mapElement);
+
+#ifdef __cplusplus
+    }
+#endif
+
+typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
+typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
 #endif

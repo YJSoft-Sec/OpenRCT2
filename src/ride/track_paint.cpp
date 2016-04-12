@@ -42,6 +42,21 @@ enum {
     DF_NW = 1 << 3,
 };
 
+int TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height)
+{
+    return sub_98197C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, ViewRotation);
+}
+
+int TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height)
+{
+    return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, ViewRotation);
+}
+
+int TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, uint8 rotation)
+{
+    return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, rotation);
+}
+
 void TileDrawingContext::UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA)
 {
     if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height)
@@ -88,7 +103,7 @@ void RideDrawingContext::DrawFloor(uint8 floorType, uint32 imageFlags, sint32 z)
     RCT2_GLOBAL(0x009DEA52, uint16) = 0;
     RCT2_GLOBAL(0x009DEA54, uint16) = 0;
     RCT2_GLOBAL(0x009DEA56, uint16) = z;
-    sub_98197C(imageId, 0, 0, 32, 32, 1, z);
+    draw_98197C(imageId, 0, 0, 32, 32, 1, z);
 }
 
 void RideDrawingContext::DrawFence(uint8 fenceType, sint32 z)
@@ -100,28 +115,28 @@ void RideDrawingContext::DrawFence(uint8 fenceType, sint32 z)
         RCT2_GLOBAL(0x009DEA52, uint16) = 2;
         RCT2_GLOBAL(0x009DEA54, uint16) = 0;
         RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-        sub_98199C(imageId, 0, 0, 1, 32, 7, z + 2);
+        draw_98199C(imageId, 0, 0, 1, 32, 7, z + 2);
         break;
     case 1:
         imageId = 20565 | RCT2_GLOBAL(0x00F44198, uint32);
         RCT2_GLOBAL(0x009DEA52, uint16) = 0;
         RCT2_GLOBAL(0x009DEA54, uint16) = 30;
         RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-        sub_98199C(imageId, 0, 0, 32, 1, 7, z + 2);
+        draw_98199C(imageId, 0, 0, 32, 1, 7, z + 2);
         break;
     case 2:
         imageId = 20566 | RCT2_GLOBAL(0x00F44198, uint32);
         RCT2_GLOBAL(0x009DEA52, uint16) = 30;
         RCT2_GLOBAL(0x009DEA54, uint16) = 0;
         RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-        sub_98199C(imageId, 0, 0, 1, 32, 7, z + 2);
+        draw_98199C(imageId, 0, 0, 1, 32, 7, z + 2);
         break;
     case 3:
         imageId = 20567 | RCT2_GLOBAL(0x00F44198, uint32);
         RCT2_GLOBAL(0x009DEA52, uint16) = 0;
         RCT2_GLOBAL(0x009DEA54, uint16) = 2;
         RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-        sub_98199C(imageId, 0, 0, 32, 1, 7, z + 2);
+        draw_98199C(imageId, 0, 0, 32, 1, 7, z + 2);
         break;
     }
 }
@@ -221,7 +236,7 @@ namespace TopSpin
         // Left back bottom support
         image_id += 572;
 
-        dc->sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height);
+        dc->draw_98197C(image_id, al, cl, lengthX, lengthY, 90, height);
 
         image_id = RCT2_GLOBAL(0x00F441A0, uint32);
         if (image_id == 0x20000000) {
@@ -245,7 +260,7 @@ namespace TopSpin
         // Left hand arm
         image_id += 380;
 
-        dc->sub_98199C(image_id,
+        dc->draw_98199C(image_id,
                        al,
                        cl,
                        lengthX,
@@ -309,7 +324,7 @@ namespace TopSpin
         RCT2_GLOBAL(0x014280B9, sint8) = (sint8)seatCoords.y;
         RCT2_GLOBAL(0x014280BA, sint16) = seatCoords.z;
 
-        dc->sub_98199C(image_id,
+        dc->draw_98199C(image_id,
                        (sint8)seatCoords.x,
                        (sint8)seatCoords.y,
                        lengthX,
@@ -327,7 +342,7 @@ namespace TopSpin
             image_id += 0xA0000000;
             image_id += 76;
 
-            dc->sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
+            dc->draw_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
 
             if (vehicle->num_peeps > 2)
             {
@@ -337,7 +352,7 @@ namespace TopSpin
                 image_id += 0xA0000000;
                 image_id += 152;
 
-                dc->sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
+                dc->draw_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
             }
 
             if (vehicle->num_peeps > 4)
@@ -348,7 +363,7 @@ namespace TopSpin
                 image_id += 0xA0000000;
                 image_id += 228;
 
-                dc->sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
+                dc->draw_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
             }
 
             if (vehicle->num_peeps > 6)
@@ -359,7 +374,7 @@ namespace TopSpin
                 image_id += 0xA0000000;
                 image_id += 304;
 
-                dc->sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
+                dc->draw_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
             }
         }
 
@@ -377,7 +392,7 @@ namespace TopSpin
         // Right hand arm
         image_id += 476;
 
-        dc->sub_98199C(image_id,
+        dc->draw_98199C(image_id,
                        al,
                        cl,
                        lengthX,
@@ -399,7 +414,7 @@ namespace TopSpin
         // Right back bottom support
         image_id += 573;
 
-        dc->sub_98199C(image_id,
+        dc->draw_98199C(image_id,
                        al,
                        cl,
                        lengthX,
@@ -487,7 +502,7 @@ namespace Shop
      */
     static void Draw(RideDrawingContext * dc)
     {
-        if (dc->TrackType != 118 ||
+        if (dc->TrackType != 118 &&
             dc->TrackType != 121) return;
 
         bool hasSupports = wooden_a_supports_paint_setup(dc->Direction & 1, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
@@ -519,17 +534,17 @@ namespace Shop
             RCT2_GLOBAL(0x009DEA52, uint16) = 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98197C(foundationImageId, 0, 0, 28, 28, 45, dc->Z);
+            dc->draw_98197C(foundationImageId, 0, 0, 28, 28, 45, dc->Z);
 
             RCT2_GLOBAL(0x009DEA52, uint16) = 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98199C(imageId, 0, 0, 28, 28, 45, dc->Z);
+            dc->draw_98199C(imageId, 0, 0, 28, 28, 45, dc->Z);
         } else {
             RCT2_GLOBAL(0x009DEA52, uint16) = 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98197C(imageId, 0, 0, 28, 28, 45, dc->Z);
+            dc->draw_98197C(imageId, 0, 0, 28, 28, 45, dc->Z);
         }
 
         dc->UpdateTileMaxHeight(height16 + 48, 32);
@@ -574,20 +589,20 @@ namespace Facility
             RCT2_GLOBAL(0x009DEA52, uint16) = dc->Direction == 3 ? 28 : 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = dc->Direction == 0 ? 28 : 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, dc->Z);
+            dc->draw_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, dc->Z);
 
             // Door image or base
             RCT2_GLOBAL(0x009DEA52, uint16) = dc->Direction == 3 ? 28 : 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = dc->Direction == 0 ? 28 : 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, dc->Z);
+            dc->draw_98199C(imageId, 0, 0, lengthX, lengthY, 29, dc->Z);
         } else {
             // Door image or base
             RCT2_GLOBAL(0x009DEA52, uint16) = dc->Direction == 3 ? 28 : 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = dc->Direction == 0 ? 28 : 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
 
-            dc->sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, dc->Z);
+            dc->draw_98197C(imageId, 0, 0, lengthX, lengthY, 29, dc->Z);
         }
 
         // Base image if door was drawn
@@ -596,13 +611,13 @@ namespace Facility
             RCT2_GLOBAL(0x009DEA52, uint16) = 28;
             RCT2_GLOBAL(0x009DEA54, uint16) = 2;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98197C(imageId, 0, 0, 2, 28, 29, dc->Z);
+            dc->draw_98197C(imageId, 0, 0, 2, 28, 29, dc->Z);
         } else if (dc->Direction == 2) {
             imageId += 4;
             RCT2_GLOBAL(0x009DEA52, uint16) = 2;
             RCT2_GLOBAL(0x009DEA54, uint16) = 28;
             RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-            dc->sub_98197C(imageId, 0, 0, 28, 2, 29, dc->Z);
+            dc->draw_98197C(imageId, 0, 0, 28, 2, 29, dc->Z);
         }
 
         dc->UpdateTileMaxHeight(height16 + 32, 32);
@@ -615,10 +630,10 @@ namespace MotionSimulator
     {
         if (is9C)
         {
-            dc->sub_98199C(imageId, offsetX, offsetY, 20, 20, 44, z);
+            dc->draw_98199C(imageId, offsetX, offsetY, 20, 20, 44, z);
         } else
         {
-            dc->sub_98197C(imageId, offsetX, offsetY, 20, 20, 44, z);
+            dc->draw_98197C(imageId, offsetX, offsetY, 20, 20, 44, z);
         }
     }
 
@@ -627,10 +642,10 @@ namespace MotionSimulator
         uint32 imageId = (22154 + dc->Direction) | RCT2_GLOBAL(0x00F441A0, uint32);
         if (is9C)
         {
-            dc->sub_98199C(imageId, offsetX, offsetY, 20, 20, 44, z);
+            dc->draw_98199C(imageId, offsetX, offsetY, 20, 20, 44, z);
         } else
         {
-            dc->sub_98197C(imageId, offsetX, offsetY, 20, 20, 44, z);
+            dc->draw_98197C(imageId, offsetX, offsetY, 20, 20, 44, z);
         }
     }
 
@@ -639,10 +654,10 @@ namespace MotionSimulator
         uint32 imageId = (22158 + dc->Direction) | RCT2_GLOBAL(0x00F441A0, uint32);
         if (is9C)
         {
-            dc->sub_98199C(imageId, offsetX, offsetY, 20, 2, 44, z);
+            dc->draw_98199C(imageId, offsetX, offsetY, 20, 2, 44, z);
         } else
         {
-            dc->sub_98197C(imageId, offsetX, offsetY, 20, 2, 44, z);
+            dc->draw_98197C(imageId, offsetX, offsetY, 20, 2, 44, z);
         }
     }
 
@@ -774,7 +789,7 @@ namespace MotionSimulator
     }
 }
 
-static TRACK_PAINT_FUNCTION GetRideDrawFunction(uint8 rideType)
+static RideDrawFunction GetRideDrawFunction(uint8 rideType)
 {
     switch (rideType) {
     case RIDE_TYPE_FOOD_STALL:        return Shop::Draw;
@@ -791,4 +806,45 @@ static TRACK_PAINT_FUNCTION GetRideDrawFunction(uint8 rideType)
     case RIDE_TYPE_FIRST_AID:         return Facility::Draw;
     }
     return nullptr;
+}
+
+extern "C" void viewport_track_paint_setup_2(uint8 rideIndex, uint8 direction, sint32 height, rct_map_element * mapElement)
+{
+    rct_ride * ride = get_ride(rideIndex);
+    uint8 trackType = mapElement->properties.track.type;
+    uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+
+    RideDrawFunction drawFunction = GetRideDrawFunction(ride->type);
+    if (drawFunction == nullptr)
+    {
+        TRACK_PAINT_FUNCTION * * trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[ride->type];
+        uint32 * trackDirectionList = (uint32*)trackTypeList[trackType];
+
+        // Have to call from this point as it pushes esi and expects callee to pop it
+        RCT2_CALLPROC_X(0x006C4934,
+                        ride->type,
+                        (int)trackDirectionList,
+                        direction,
+                        height,
+                        (int)mapElement,
+                        rideIndex * sizeof(rct_ride),
+                        trackSequence);
+    }
+    else
+    {
+        RideDrawingContext dc;
+        dc.ViewRotation = get_current_rotation();
+        dc.Direction = direction;
+        dc.X = RCT2_GLOBAL(0x009DE56A, uint16);
+        dc.X = RCT2_GLOBAL(0x009DE56E, uint16);
+        dc.Z = height;
+        dc.MapElement = mapElement;
+        dc.RideIndex = rideIndex;
+        dc.Ride = ride;
+        dc.RideEntry = get_ride_entry_by_ride(ride);
+        dc.TrackType = trackType;
+        dc.TrackSequence = trackSequence;
+
+        drawFunction(&dc);
+    }
 }
