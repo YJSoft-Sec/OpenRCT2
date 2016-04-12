@@ -45,6 +45,14 @@ enum
 
 enum
 {
+    FLOOR_STYLE_TILE_SMALL,
+    FLOOR_STYLE_TILE_LARGE,
+    FLOOR_STYLE_BROWN_RUBBER,
+    FLOOR_STYLE_STEEL,
+};
+
+enum
+{
     SUPPORT_STYLE_WOOD
 };
 
@@ -126,9 +134,27 @@ static rct_sxy8 GetEntranceCheckOffset(uint8 direction, uint8 rotation)
     return entranceCheckOffsets[(direction * 4) + rotation];
 }
 
-void RideDrawingContext::DrawFloor(uint8 floorType, uint32 imageFlags, sint32 z)
+void RideDrawingContext::DrawFloor(uint8 style, uint32 imageFlags, sint32 z)
 {
-    uint32 imageId = (22134 + Direction) | imageFlags;
+    uint32 imageId;
+
+    switch (style) {
+    default: return;
+    case FLOOR_STYLE_TILE_SMALL:
+        imageId = 14567;
+        break;
+    case FLOOR_STYLE_TILE_LARGE:
+        imageId = 14567 + (Direction & 1);
+        break;
+    case FLOOR_STYLE_BROWN_RUBBER:
+        imageId = 22134 + Direction;
+        break;
+    case FLOOR_STYLE_STEEL:
+        imageId = 22142 + Direction;
+        break;
+    }
+
+    imageId |= imageFlags;
     RCT2_GLOBAL(0x009DEA52, uint16) = 0;
     RCT2_GLOBAL(0x009DEA54, uint16) = 0;
     RCT2_GLOBAL(0x009DEA56, uint16) = z;
@@ -492,7 +518,7 @@ namespace TopSpin
         };
 
         dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32));
-        dc->DrawFloor(0, RCT2_GLOBAL(0x00F44198, uint32), dc->Z);
+        dc->DrawFloor(FLOOR_STYLE_BROWN_RUBBER, RCT2_GLOBAL(0x00F44198, uint32), dc->Z);
         uint8 fences = TopSpinTrackSeqFenceMap[dc->TrackSequence].fences;
         dc->DrawFencesChecked(fences, 0, dc->Z);
 
@@ -787,7 +813,7 @@ namespace MotionSimulator
         if (dc->TrackSequence > 3) return;
 
         dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32));
-        dc->DrawFloor(0, RCT2_GLOBAL(0x00F4419C, uint32), dc->Z);
+        dc->DrawFloor(FLOOR_STYLE_BROWN_RUBBER, RCT2_GLOBAL(0x00F4419C, uint32), dc->Z);
 
         uint8 fences = DirectionInfo[dc->TrackSequence].fences;
         dc->DrawFencesChecked(fences, 0, dc->Z);
