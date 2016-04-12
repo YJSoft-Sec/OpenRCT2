@@ -419,8 +419,8 @@ namespace TopSpin
                        cl,
                        lengthX,
                        lengthY,
-                       height,
                        90,
+                       height,
                        0);
 
         RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
