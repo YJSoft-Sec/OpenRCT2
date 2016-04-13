@@ -103,6 +103,44 @@ void TileDrawingContext::UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA)
     }
 }
 
+void TileDrawingContext::SetSupportSegmentZ(sint8 subX, sint8 subY, uint16 height)
+{
+    switch (subX) {
+    case -1:
+        switch (subY) {
+        case -1: RCT2_GLOBAL(0x141E9B4, uint16) = height; break;
+        case  0: RCT2_GLOBAL(0x141E9C8, uint16) = height; break;
+        case +1: RCT2_GLOBAL(0x141E9B8, uint16) = height; break;
+        }
+        break;
+    case  0:
+        switch (subY) {
+        case -1: RCT2_GLOBAL(0x141E9CC, uint16) = height; break;
+        case  0: RCT2_GLOBAL(0x141E9C4, uint16) = height; break;
+        case +1: RCT2_GLOBAL(0x141E9D0, uint16) = height; break;
+        }
+        break;
+    case +1:
+        switch (subY) {
+        case -1: RCT2_GLOBAL(0x141E9BC, uint16) = height; break;
+        case  0: RCT2_GLOBAL(0x141E9D4, uint16) = height; break;
+        case +1: RCT2_GLOBAL(0x141E9C0, uint16) = height; break;
+        }
+        break;
+    }
+}
+
+void TileDrawingContext::SetSupportZ(uint16 height)
+{
+    for (sint8 y = -1; y <= 1; y++)
+    {
+        for (sint8 x = -1; x <= 1; x++)
+        {
+            SetSupportSegmentZ(x, y, height);
+        }
+    }
+}
+
 static rct_sxy8 GetEntranceCheckOffset(uint8 direction, uint8 rotation)
 {
     const static rct_sxy8 entranceCheckOffsets[] = {
@@ -530,18 +568,18 @@ namespace TopSpin
             DrawVehicle(dc, ti->vehicle_offset_x, ti->vehicle_offset_y, dc->Z);
         }
 
-        RCT2_GLOBAL(0x141E9B4, uint16) = TransformArg(ti->unk_args[ 0], dc->Z);
+        dc->SetSupportSegmentZ(-1, -1, TransformArg(ti->unk_args[ 0], dc->Z));
         RCT2_GLOBAL(0x141E9B6, uint16) = TransformArg(ti->unk_args[ 1], dc->Z);
-        RCT2_GLOBAL(0x141E9B8, uint16) = TransformArg(ti->unk_args[ 2], dc->Z);
-        RCT2_GLOBAL(0x141E9BC, uint16) = TransformArg(ti->unk_args[ 3], dc->Z);
-        RCT2_GLOBAL(0x141E9C0, uint16) = TransformArg(ti->unk_args[ 4], dc->Z);
-        RCT2_GLOBAL(0x141E9C4, uint16) = TransformArg(ti->unk_args[ 5], dc->Z);
-        RCT2_GLOBAL(0x141E9C8, uint16) = TransformArg(ti->unk_args[ 6], dc->Z);
+        dc->SetSupportSegmentZ(-1, +1, TransformArg(ti->unk_args[ 2], dc->Z));
+        dc->SetSupportSegmentZ(+1, -1, TransformArg(ti->unk_args[ 3], dc->Z));
+        dc->SetSupportSegmentZ(+1, +1, TransformArg(ti->unk_args[ 4], dc->Z));
+        dc->SetSupportSegmentZ( 0,  0, TransformArg(ti->unk_args[ 5], dc->Z));
+        dc->SetSupportSegmentZ(-1,  0, TransformArg(ti->unk_args[ 6], dc->Z));
         RCT2_GLOBAL(0x141E9CA, uint16) = TransformArg(ti->unk_args[ 7], dc->Z);
-        RCT2_GLOBAL(0x141E9CC, uint16) = TransformArg(ti->unk_args[ 8], dc->Z);
+        dc->SetSupportSegmentZ( 0, -1, TransformArg(ti->unk_args[ 8], dc->Z));
         RCT2_GLOBAL(0x141E9CE, uint16) = TransformArg(ti->unk_args[ 9], dc->Z);
-        RCT2_GLOBAL(0x141E9D0, uint16) = TransformArg(ti->unk_args[10], dc->Z);
-        RCT2_GLOBAL(0x141E9D4, uint16) = TransformArg(ti->unk_args[11], dc->Z);
+        dc->SetSupportSegmentZ( 0, +1, TransformArg(ti->unk_args[10], dc->Z));
+        dc->SetSupportSegmentZ(+1,  0, TransformArg(ti->unk_args[11], dc->Z));
 
         dc->UpdateTileMaxHeight(dc->Z + ti->max_height, 32);
     }
@@ -559,16 +597,7 @@ namespace Shop
             dc->TrackType != FLAT_RIDE_ELEM_INFORMATION_KIOSK) return;
 
         bool hasSupports = dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32));
-
-        RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
+        dc->SetSupportZ(NO_SUPPORT);
 
         rct_ride_entry_vehicle *firstVehicleEntry = &dc->RideEntry->vehicles[0];
 
@@ -615,16 +644,7 @@ namespace Facility
         if (dc->TrackType != FLAT_RIDE_ELEM_FACILITY) return;
 
         bool hasSupports = dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A4, uint32));
-
-        RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
-        RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
+        dc->SetSupportZ(NO_SUPPORT);
 
         rct_ride_entry_vehicle * firstVehicleEntry = &dc->RideEntry->vehicles[0];
 
@@ -828,16 +848,7 @@ namespace MotionSimulator
             break;
         }
 
-        RCT2_GLOBAL(0x0141E9D4, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9C4, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9C8, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9B8, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9BC, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9B4, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9C0, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9CC, uint16) = 0xFFFF;
-        RCT2_GLOBAL(0x0141E9D0, uint16) = 0xFFFF;
-
+        dc->SetSupportZ(NO_SUPPORT);
         dc->UpdateTileMaxHeight(dc->Z + 128, 32);
     }
 }

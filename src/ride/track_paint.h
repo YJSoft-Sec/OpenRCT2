@@ -5,6 +5,8 @@
 
 #ifdef __cplusplus
 
+constexpr uint16 NO_SUPPORT = 0xFFFF;
+
 class TileDrawingContext
 {
 public:
@@ -22,6 +24,9 @@ public:
     bool DrawSupports(uint8 style, uint16 special, sint32 z, uint32 imageFlags, bool * underground = nullptr);
     bool DrawSupports(uint8 style, uint8 typeDirection, uint16 special, sint32 z, uint32 imageFlags, bool * underground = nullptr);
     void UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA);
+
+    void SetSupportSegmentZ(sint8 subX, sint8 subY, uint16 height);
+    void SetSupportZ(uint16 height);
 };
 
 class RideDrawingContext : public TileDrawingContext
