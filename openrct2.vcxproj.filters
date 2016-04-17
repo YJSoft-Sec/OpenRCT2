@@ -588,8 +588,8 @@
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\crash.cpp" />
-    <ClCompile Include="src\rct1\tables.cpp" />
     <ClCompile Include="src\rct1\S4Importer.cpp" />
+    <ClCompile Include="src\rct1\tables.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -901,5 +901,6 @@
     </ClInclude>
     <ClInclude Include="src\platform\crash.h" />
     <ClInclude Include="src\rct1\import.h" />
+    <ClInclude Include="src\rct1\S4Importer.h" />
   </ItemGroup>
 </Project>
