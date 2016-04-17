@@ -588,6 +588,8 @@
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\crash.cpp" />
+    <ClCompile Include="src\rct1\tables.cpp" />
+    <ClCompile Include="src\rct1\S4Importer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -898,5 +900,6 @@
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\crash.h" />
+    <ClInclude Include="src\rct1\import.h" />
   </ItemGroup>
 </Project>
