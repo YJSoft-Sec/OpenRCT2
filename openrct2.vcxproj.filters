@@ -604,10 +604,11 @@
       <Filter>Source\CommandLine</Filter>
     </ClCompile>
     <ClCompile Include="src\interface\paint_surface.c" />
-    <ClCompile Include="src\ride\track_list.c">
+    <ClCompile Include="src\ride\track_list.c" />
+    <ClCompile Include="src\ride\track_design.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
-    <ClCompile Include="src\ride\track_design.c">
+    <ClCompile Include="src\ride\track_design_index.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
     <ClCompile Include="src\ride\track_design_save.c">
@@ -936,7 +937,7 @@
     <ClInclude Include="src\interface\paint_surface.h" />
     <ClInclude Include="src\ride\track_design.h">
       <Filter>Source\Ride</Filter>
-    </ClCompile>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\logo\icon.ico">
