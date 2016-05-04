@@ -604,7 +604,6 @@
       <Filter>Source\CommandLine</Filter>
     </ClCompile>
     <ClCompile Include="src\interface\paint_surface.c" />
-    <ClCompile Include="src\ride\track_list.c" />
     <ClCompile Include="src\ride\track_design.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
